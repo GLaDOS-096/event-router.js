@@ -1,19 +1,17 @@
 // event-router.js
 
-function EventTrigger(){
-    this.addHandler = function addEventHandler(handler){
-        /* This is what a EventTrigger handler looks like
-           {
-               "event": event,
-               "src": binded_object,
-               "handler": handler_function
-           }
-         */
+function EventTrigger(bindObj){
+    this.bond = bindObj
+    this.addHandler = function addHandler(handler){
+        var keyname = "on"+handler.event
+        bindObj[keyname] = handler.handleFunc
     }
-    this.launch = function launch(){
-
+    this.launch = function launch(event){
+        var keyname = "on"+handler.event
+        bindObj[keyname]()
     }
     this.removeHandler = function removeHandler(handler){
-
+        var keyname = "on"+handler.event
+        bindObj[keyname] = undefined
     }
 }
