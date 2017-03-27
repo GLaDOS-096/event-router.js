@@ -1,6 +1,6 @@
 // event-router.js
 
-function reflectChartObj(bindObj,eventTrigger){
+function ReflectChartObj(bindObj,eventTrigger){
     this.src = bindObj
     this.trigger = eventTrigger
 }
@@ -25,5 +25,10 @@ function EventRouter(){
     this.addReflectChart = function addReflectChart(reflectChartObj){
         this.reflectChart.push(reflectChartObj)
     }
-    this.listener = new Proxy(this.reflectChart,{})
+    this.listener = new Proxy(this.reflectChart,{
+        get: function(target,propKey,value,receiver){},
+        set: function(target,propKey,value,receiver){
+            console.log(target,propKey,value,receiver)
+        }
+    })
 }
