@@ -14,7 +14,8 @@ function EventTrigger(bindObj){
     this.bond = bindObj
     this.handlers = {}
     this.addHandler = function addHandler(eventHandler){
-        this.bond.push(bindObj)
+        // console.log(this)
+        this.bond = bindObj
         this.handlers[eventHandler.event] = eventHandler.handleFunc
     }
     this.launch = function launch(event,args){
@@ -26,16 +27,22 @@ function EventTrigger(bindObj){
 }
 
 function EventRouter(){
-    this.reflectChart = []
+    this.__reflectChart__ = []
     this.addReflectChart = function addReflectChart(reflectChartArr){
+        var self = this
         reflectChartArr.forEach(function(reflectChartObj){
-            this.reflectChart.push(reflectChartObj)
+            // console.log(this)
+            self.__reflectChart__.push(reflectChartObj)
         })
     }
-    this.listener = new Proxy(this.reflectChart,{
-        get: function(target,propKey,value,receiver){},
+    this.reflectChart = new Proxy(this.__reflectChart__,{
+        get: function(target,propKey,receiver){
+            console.log('get')
+            return Reflect.get(target,propKey,receiver)
+        },
         set: function(target,propKey,value,receiver){
-            console.log(target,propKey,value,receiver)
+            console.log('set')
+            return Reflect.set(target,propKey,receiver)
         }
     })
 }
