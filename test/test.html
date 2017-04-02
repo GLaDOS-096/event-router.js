@@ -10,7 +10,7 @@
 <body>
     <!-- fine there is nothing to say today -->
     <script>
-        var counter = 5
+        var counter = {count: 5}
         var mainRouter = new EventRouter()
         var trigger = new EventTrigger(counter)
         var zeroHandler = new EventHandler("zero",function(){
@@ -20,9 +20,11 @@
         trigger.addHandler(zeroHandler)
         mainRouter.addReflectChart([reflectObj])
         var __timer__ = setInterval(function(){
-            counter = counter - 1
-            if (counter==0){
+            mainRouter.reflectChart[0].src.count -= 1
+            console.log(mainRouter.reflectChart[0].src.count)
+            if (counter.count==0){
                 trigger.launch("zero")
+                clearInterval(__timer__)
             }
         },500)
     </script>

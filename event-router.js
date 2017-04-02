@@ -27,22 +27,22 @@ function EventTrigger(bindObj){
 }
 
 function EventRouter(){
-    this.__reflectChart__ = []
+    this.reflectChart = []
     this.addReflectChart = function addReflectChart(reflectChartArr){
         var self = this
-        reflectChartArr.forEach(function(reflectChartObj){
+        reflectChartArr.forEach(function(__reflectChartObj__){
             // console.log(this)
-            self.__reflectChart__.push(reflectChartObj)
+            var reflectChartObj = new Proxy(__reflectChartObj__,{
+                get: function(target,propKey,receiver){
+                    console.log('get')
+                    return Reflect.get(target,propKey,receiver)
+                },
+                set: function(target,propKey,value,receiver){
+                    console.log('set '+ target + 'to '+ value) 
+                    return Reflect.set(target,propKey,receiver)
+                }
+            })
+            self.reflectChart.push(reflectChartObj)
         })
     }
-    this.reflectChart = new Proxy(this.__reflectChart__,{
-        get: function(target,propKey,receiver){
-            console.log('get')
-            return Reflect.get(target,propKey,receiver)
-        },
-        set: function(target,propKey,value,receiver){
-            console.log('set')
-            return Reflect.set(target,propKey,receiver)
-        }
-    })
 }
